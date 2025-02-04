@@ -16,9 +16,9 @@ const NotesSchema = new Schema({
         default: Date.now
     },
 
-    userId: {
-        type: Number,
-        required: true
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users'
     }
 });
 
