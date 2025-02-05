@@ -67,15 +67,15 @@ const NoteState = (props) => {
         let { title, content, _id } = data;
         if (!_id) return true;
 
-        let notes_ = [];
+        let notes_ = JSON.parse(JSON.stringify(notes));
 
-        for (let i = 0; i < notes.length; i++) {
-            const note = notes[i];
+        for (let i = 0; i < notes_.length; i++) {
+            const note = notes_[i];
             if (note._id === _id) {
                 note.title = title;
                 note.content = content;
+                break;
             }
-            notes_.push(note);
         }
 
         setNotes(notes_);

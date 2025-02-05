@@ -81,7 +81,9 @@ const Notes = () => {
             {/* All Notes */}
             <h3 className='mt-3'>Your Notes</h3>
             <hr className='my-3' />
-            <div className='row mb-5'>
+            {!notes.length && <h5 className='m-auto text-center'>You don't have any notes yet 😢</h5>}
+
+            <div className='row mb-5 w-100'>
                 {notes.map((note, i) => {
                     return (
                         <div className="col-md-3 mt-3" key={i}>
