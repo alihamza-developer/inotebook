@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useContext } from 'react'
+import { useNavigate } from 'react-router-dom';
 import NoteContext from '../context/notes/Context';
 import { MdOutlineEdit, MdDelete } from "react-icons/md";
 
 const Notes = () => {
 
     const { notes, deleteNote, getAllNotes, editNote } = useContext(NoteContext),
+        navigate = useNavigate(),
         modalRef = useRef(null),
         [noteForEdit, setNoteForEdit] = useState({
             title: "",
@@ -14,7 +16,11 @@ const Notes = () => {
         });
 
     useEffect(() => {
-        getAllNotes();
+        if (localStorage.getItem("auth-token"))
+            getAllNotes();
+        else {
+            navigate("/login");
+        }
     }, []);
 
 

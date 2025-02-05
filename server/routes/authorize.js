@@ -10,8 +10,8 @@ const router = express.Router();
 // Register
 router.post("/register", [
     body("name").notEmpty().trim(),
-    body("email").isEmail().notEmpty().trim(),
-    body("password").isLength({ min: 6 }),
+    body("email", 'Invalid email address').isEmail().notEmpty().trim(),
+    body("password").isLength({ min: 3 }),
 ], async (req, res) => {
 
     const errors = validationResult(req),

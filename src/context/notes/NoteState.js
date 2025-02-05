@@ -3,9 +3,7 @@ import React, { useState } from 'react'
 
 const NoteState = (props) => {
     const [notes, setNotes] = useState([]),
-        API_URL = `http://localhost:8000/api`,
-        AUTH_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTEwNDM4ODk2MjQyZWI5Yjc5ZmFhYiIsImlhdCI6MTczODcxMjg4MX0.6acz1l99Yq1GmbdQpyN0OvPld862shjDCbkc_3m_xKQ";
-
+        API_URL = process.env.REACT_APP_API_URL;
 
     //#region Crud Operation
 
@@ -14,7 +12,7 @@ const NoteState = (props) => {
         let response = await fetch(`${API_URL}/notes/add`, {
             method: 'POST',
             headers: {
-                'auth-token': AUTH_TOKEN,
+                'auth-token': localStorage.getItem("auth-token"),
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(data),
@@ -43,7 +41,7 @@ const NoteState = (props) => {
         fetch(`${API_URL}/notes/delete/${id}`, {
             method: 'DELETE',
             headers: {
-                'auth-token': AUTH_TOKEN
+                'auth-token': localStorage.getItem("auth-token")
             }
         });
     }
@@ -53,7 +51,7 @@ const NoteState = (props) => {
         let response = await fetch(`${API_URL}/notes/getall`, {
             method: 'GET',
             headers: {
-                'auth-token': AUTH_TOKEN
+                'auth-token': localStorage.getItem("auth-token")
             }
         });
 
@@ -83,7 +81,7 @@ const NoteState = (props) => {
         await fetch(`${API_URL}/notes/update`, {
             method: 'PUT',
             headers: {
-                'auth-token': AUTH_TOKEN,
+                'auth-token': localStorage.getItem("auth-token"),
                 'Content-Type': "application/json"
             },
             body: JSON.stringify(data)
