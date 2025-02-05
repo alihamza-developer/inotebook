@@ -39,7 +39,7 @@ const AddNote = () => {
                     <label className="form-label">Content</label>
                     <textarea className="form-control" name='content' value={note.content} onChange={onChange} placeholder='Your content here...' rows="3"></textarea>
                 </div>
-                <button className='btn btn-secondary btn-sm mt-2' >Save</button>
+                <button className='btn btn-success btn-sm mt-2' >Save</button>
             </form>
         </>
     )
