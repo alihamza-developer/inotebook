@@ -1,14 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useContext } from 'react'
 import NoteContext from '../context/notes/Context';
 import { MdOutlineEdit, MdDelete } from "react-icons/md";
 
 const Notes = () => {
 
-    const { notes, deleteNote } = useContext(NoteContext);
+    const { notes, deleteNote, getAllNotes } = useContext(NoteContext);
+
+    useEffect(() => {
+        getAllNotes();
+    }, [])
+
+
     return (
         <>
-
             <h3 className='mt-3'>Your Notes</h3>
             <hr className='my-3' />
             <div className='row mb-5'>
@@ -20,7 +25,7 @@ const Notes = () => {
                                     <div className="title">{note.title}</div>
                                     <div className='d-flex' style={{ gap: "10px", cursor: "pointer" }}>
                                         <MdOutlineEdit />
-                                        <MdDelete onClick={() => deleteNote(note.id)} />
+                                        <MdDelete onClick={() => deleteNote(note._id)} />
                                     </div>
                                 </div>
                                 <div className="card-body">

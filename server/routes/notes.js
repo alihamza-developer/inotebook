@@ -1,6 +1,7 @@
 import express from 'express';
 import { verifyUser } from "../middleware/auth.js";
 import Note from "../models/Notes.js";
+import mongoose from 'mongoose';
 
 const router = express.Router();
 
@@ -11,13 +12,17 @@ router.post("/add", verifyUser, async (req, res) => {
     if (!title || !content) return res.status(400).json({ message: "All fields are required" });
 
     try {
-        await Note.create({
+        let response = await Note.create({
             title,
             content,
             user: req.user.id
         });
 
+        // Get note id 
+        let id = response._id.toString();
+
         return res.status(200).json({
+            id,
             message: "Note added successfully",
             status: "success"
         });

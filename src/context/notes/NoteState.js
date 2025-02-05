@@ -2,60 +2,63 @@ import NoteContext from "./Context.js";
 import React, { useState } from 'react'
 
 const NoteState = (props) => {
-
-    const [notes, setNotes] = useState([
-        {
-            id: 1,
-            "title": "Meeting Notes",
-            "content": "Discussed project roadmap and next steps.",
-            "createdAt": "2025-02-04T12:00:00Z"
-        },
-        {
-            id: 2,
-            "title": "Shopping List",
-            "content": "Milk, Eggs, Bread, Coffee",
-            "createdAt": "2025-02-04T12:05:00Z"
-        },
-        {
-            id: 3,
-            "title": "Workout Plan",
-            "content": "Monday: Chest & Triceps, Tuesday: Back & Biceps",
-            "createdAt": "2025-02-04T12:10:00Z"
-        },
-        {
-            id: 4,
-            "title": "Recipe Idea",
-            "content": "Try making homemade pizza with fresh ingredients.",
-            "createdAt": "2025-02-04T12:15:00Z"
-        },
-        {
-            id: 5,
-            "title": "Project Deadline",
-            "content": "Submit the final draft by Friday at noon.",
-            "createdAt": "2025-02-04T12:20:00Z"
-        },
-        {
-            id: 6,
-            "title": "Book Recommendations",
-            "content": "Atomic Habits, The Pragmatic Programmer, Clean Code",
-            "createdAt": "2025-02-04T12:25:00Z"
-        }
-    ]);
+    const [notes, setNotes] = useState([]),
+        API_URL = `http://localhost:8000/api`,
+        AUTH_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTEwNDM4ODk2MjQyZWI5Yjc5ZmFhYiIsImlhdCI6MTczODcxMjg4MX0.6acz1l99Yq1GmbdQpyN0OvPld862shjDCbkc_3m_xKQ";
 
 
     //#region Crud Operation
 
-    const addNote = (data) => {
+    const addNote = async (data) => {
+        // Add Note
+        let response = await fetch(`${API_URL}/notes/add`, {
+            method: 'POST',
+            headers: {
+                'auth-token': AUTH_TOKEN,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data),
+        });
+
+        response = await response.json();
+        data._id = response.id;
+
+        // Make Deep Copy
+        let newNotes = JSON.stringify(notes);
+        newNotes = JSON.parse(newNotes);
+        newNotes.unshift(data);
+
 
         // TODO: Call API and save
-        setNotes(notes.concat(data));
+        setNotes(newNotes);
     }
 
     // Delete Note
     const deleteNote = (id) => {
-        let newNotes = notes.filter(note => note.id !== id);
-        // TODO : API Call to delete
-        setNotes(newNotes)
+        let newNotes = notes.filter(note => note._id !== id);
+        setNotes(newNotes);
+
+        // Delete
+        fetch(`${API_URL}/notes/delete/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'auth-token': AUTH_TOKEN
+            }
+        });
+    }
+
+    // Get All Notes
+    const getAllNotes = async () => {
+        let response = await fetch(`${API_URL}/notes/getall`, {
+            method: 'GET',
+            headers: {
+                'auth-token': AUTH_TOKEN
+            }
+        });
+
+        let data = await response.json();
+        setNotes(data.notes.reverse());
+        return data;
     }
 
     //#endregion Crud Operation
@@ -64,6 +67,7 @@ const NoteState = (props) => {
         <NoteContext.Provider value={{
             notes: notes,
             setNotes,
+            getAllNotes,
             addNote,
             deleteNote
         }}>

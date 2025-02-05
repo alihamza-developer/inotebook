@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import authorize from './routes/authorize.js';
 import notes from './routes/notes.js';
 import { connect } from './database.js';
+import cors from "cors";
 dotenv.config();
 
 (async () => {
@@ -10,8 +11,12 @@ dotenv.config();
 
     const app = express();
 
-    app.use(express.json()); // Parse JSON Body
+
+    app.use(cors()); // Enable CORS
+
     // Available Routes
+
+    app.use(express.json()); // Parse JSON Body
     app.use("/api/auth", authorize); // Manage All Authorization Routes
     app.use("/api/notes", notes); // Manage Notes Routes
 

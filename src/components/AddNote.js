@@ -10,10 +10,10 @@ const AddNote = () => {
         content: ""
     });
 
-    const handleForm = (e) => {
+    const handleForm = async (e) => {
         e.preventDefault();
 
-        NOTE.addNote(note);
+        await NOTE.addNote(note);
         setNote({
             title: "",
             content: ""
@@ -22,7 +22,7 @@ const AddNote = () => {
 
 
     const onChange = (e) => {
-        setNote({ ...note, [e.target.name]: [e.target.value] });
+        setNote({ ...note, [e.target.name]: e.target.value });
     }
 
 
