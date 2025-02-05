@@ -48,7 +48,8 @@ const Register = (props) => {
 
   return (
     <>
-      <div className="d-flex justify-content-center">
+      <h3 className="text-center mt-5">Welcome to INotebook</h3>
+      <div className="d-flex justify-content-center mt-2">
         <div className="col-md-6">
           <form onSubmit={handleForm}>
             <div className="mb-3">
