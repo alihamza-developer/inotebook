@@ -1,7 +1,6 @@
 import express from 'express';
 import { verifyUser } from "../middleware/auth.js";
 import Note from "../models/Notes.js";
-import mongoose from 'mongoose';
 
 const router = express.Router();
 
@@ -9,7 +8,7 @@ const router = express.Router();
 router.post("/add", verifyUser, async (req, res) => {
 
     let { title, content } = req.body;
-    if (!title || !content) return res.status(400).json({ message: "All fields are required" });
+    if (!title.length && !content.length) return res.status(400).json({ status: 'error', message: "Fill atleast one field!" });
 
     try {
         let response = await Note.create({

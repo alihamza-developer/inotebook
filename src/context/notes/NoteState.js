@@ -21,6 +21,7 @@ const NoteState = (props) => {
         });
 
         response = await response.json();
+        if (response.status === 'error') return false;
         data._id = response.id;
 
         // Make Deep Copy
