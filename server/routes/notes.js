@@ -38,8 +38,9 @@ router.post("/add", verifyUser, async (req, res) => {
 // Update Note
 router.put("/update", verifyUser, async (req, res) => {
 
-    let { title, content, id } = req.body;
-    if (!id) return res.status(400).json({ message: "ID is required" });
+    let { title, content, _id } = req.body;
+    console.log(req.body);
+    if (!_id) return res.status(400).json({ message: "ID is required" });
 
     try {
 
@@ -47,7 +48,7 @@ router.put("/update", verifyUser, async (req, res) => {
         if (title) note.title = title;
         if (content) note.content = content;
 
-        await Note.findOneAndUpdate({ _id: id }, note);
+        await Note.findOneAndUpdate({ _id }, note);
         return res.status(200).json({
             message: "Note updated successfully",
             status: "success"

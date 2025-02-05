@@ -61,6 +61,34 @@ const NoteState = (props) => {
         return data;
     }
 
+    // Edit Note
+    const editNote = async (data) => {
+        let { title, content, _id } = data;
+        if (!_id) return true;
+
+        let notes_ = [];
+
+        for (let i = 0; i < notes.length; i++) {
+            const note = notes[i];
+            if (note._id === _id) {
+                note.title = title;
+                note.content = content;
+            }
+            notes_.push(note);
+        }
+
+        setNotes(notes_);
+
+        await fetch(`${API_URL}/notes/update`, {
+            method: 'PUT',
+            headers: {
+                'auth-token': AUTH_TOKEN,
+                'Content-Type': "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+    };
+
     //#endregion Crud Operation
 
     return (
@@ -68,6 +96,7 @@ const NoteState = (props) => {
             notes: notes,
             setNotes,
             getAllNotes,
+            editNote,
             addNote,
             deleteNote
         }}>
